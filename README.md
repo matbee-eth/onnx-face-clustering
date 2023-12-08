@@ -20,3 +20,7 @@ Based on https://github.com/yiyuezhuo/mtcnn-onnxruntime
 ## Usage
 
 To use this project, you will need to install the necessary dependencies, then run the appropriate script for your use case.
+You need to run Google Chrome/Canary with chrome://flags/#enable-webgpu-developer-features enabled.
+- npm install http-server
+- http-server . -p 8080
+- navigate to http://localhost:8080/app.html

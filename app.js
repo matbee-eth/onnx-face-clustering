@@ -147,3 +147,71 @@ document.addEventListener('DOMContentLoaded', function() {
       selectedFile = img;
   }
 });
+
+// The Tool-Tip instance:
+function ToolTip(canvas, region, text, width, timeout) {
+
+  var me = this,                                // self-reference for event handlers
+      div = document.createElement("div"),      // the tool-tip div
+      parent = canvas.parentNode,               // parent node for canvas
+      visible = false;                          // current status
+  
+  // set some initial styles, can be replaced by class-name etc.
+  div.style.cssText = "position:fixed;padding:7px;background:gold;pointer-events:none;width:" + width + "px";
+  div.appendChild(text);
+  
+  // show the tool-tip
+  this.show = function(pos) {
+    console.info("show", div);
+    if (!visible) {                             // ignore if already shown (or reset time)
+      visible = true;                           // lock so it's only shown once
+      setDivPos(pos);                           // set position
+      parent.appendChild(div);                  // add to parent of canvas
+    }
+  }
+  
+  // hide the tool-tip
+  function hide() {
+    visible = false;                            // hide it after timeout
+    parent.removeChild(div);                    // remove from DOM
+  }
+
+  // check mouse position, add limits as wanted... just for example:
+  function check(e) {
+    var pos = getPos(e),
+        posAbs = {x: e.clientX, y: e.clientY};  // div is fixed, so use clientX/Y
+    if (pos.x >= region.x1 && pos.x < region.x2 &&
+        pos.y >= region.y1 && pos.y < region.y2) {
+          setDivPos(posAbs);
+          if (!visible) {
+            me.show(posAbs);
+          }
+    }
+    else {
+      setDivPos(posAbs);                     // otherwise, update position
+      if (visible) hide()
+    }
+  }
+  
+  // get mouse position relative to canvas
+  function getPos(e) {
+    var r = canvas.getBoundingClientRect();
+    return {x: e.clientX - r.left, y: e.clientY - r.top}
+  }
+  
+  // update and adjust div position if needed (anchor to a different corner etc.)
+  function setDivPos(pos) {
+    if (visible){
+      if (pos.x < 0) pos.x = 0;
+      if (pos.y < 0) pos.y = 0;
+      // other bound checks here
+      div.style.left = pos.x + "px";
+      div.style.top = pos.y + "px";
+    }
+  }
+  
+  // we need to use shared event handlers:
+  canvas.addEventListener("mousemove", check);
+  canvas.addEventListener("click", check);
+  
+}

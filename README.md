@@ -1,4 +1,4 @@
-# Project Title
+# Typescript/Javascript implementation of ONNX Face Clustering using ONNXRuntimeWeb
 
 ## Description
 

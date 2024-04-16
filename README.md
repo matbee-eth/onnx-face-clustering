@@ -1,4 +1,4 @@
-# Typescript/Javascript implementation of ONNX Face Clustering using ONNXRuntimeWeb
+# Typescript/Javascript implementation of Face Clustering using ONNXRuntimeWeb
 
 ## Description
 
